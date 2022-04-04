@@ -1,5 +1,4 @@
 # TODO 
-# Add choice for player name
 # Add randomize first player
 # Split main file into classes files
 
@@ -9,8 +8,16 @@ class Player
 
   @@first_player = true
   def initialize
-    @@first_player ? (@name = "player1"; @score = 0) : (@name = "player2"; @score = 0)
-    @@first_player = false
+    puts "Enter player name"
+
+    if @@first_player
+      @name = gets.chomp
+      @@first_player = false
+    else
+      @name = gets.chomp
+    end
+
+    @score = 0
   end
 end
 
