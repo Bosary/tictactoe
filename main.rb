@@ -1,3 +1,11 @@
+# TODO 
+# Add input position check
+# Add choice to play a new round
+# Add score
+# Add choice for player name
+# Add randomize first player
+# Split main file into classes files
+
 class Player
   attr_reader :name, :mark
 
