@@ -1,5 +1,4 @@
 # TODO 
-# Add randomize first player
 # Split main file into classes files
 
 class Player
@@ -27,7 +26,6 @@ class Game
   def initialize(player1, player2)
     @player1 = player1
     @player2 = player2
-    @current_player = player1
     @round_nbr = 1
   end
 
@@ -42,13 +40,20 @@ class Game
   end
 
   def play_round
+    @current_player = randomize_player
+    puts "\n#{@current_player.name} go first"
     @board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
     turn = 0
     until victory? || turn >= 9
       play_turn
       turn += 1
     end
     finished_game
+  end
+
+  def randomize_player
+    return [player1, player2].sample
   end
 
   def play_turn
