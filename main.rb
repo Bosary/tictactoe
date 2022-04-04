@@ -1,6 +1,4 @@
 # TODO 
-# Add input position check
-# Add choice to play a new round
 # Add score
 # Add choice for player name
 # Add randomize first player
@@ -18,12 +16,11 @@ end
 
 class Game
   attr_reader :player1, :player2
-  @@player1_turn = true # true => player1 ; false => player2
-
+  
   def initialize(player1, player2)
-    @board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
     @player1 = player1
     @player2 = player2
+    @@current_player = player1
   end
 
   def display
@@ -37,10 +34,10 @@ class Game
   end
 
   def play_round
+    @board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
     turn = 0
     until victory? || turn >= 9
       play_turn
-      @@player1_turn = !@@player1_turn
       turn += 1
     end
     finished_game
@@ -48,15 +45,25 @@ class Game
 
   def play_turn
     display
-    puts "Pick a position"
-    position = gets.chomp
+    position = get_input
     update_board(position)
+    switch_player
+  end
+
+  def get_input
+    puts "Pick a position #{@@current_player.name}"
+    position = gets.chomp
+    @board.include?(position) ? (return position) : (puts 'Wrong input'; get_input)
   end
 
   def update_board(position)
     pos_index = @board.index(position)
-    @@player1_turn ? (@board[pos_index] = "X") : (@board[pos_index] = "O")
+    @@current_player == player1 ? (@board[pos_index] = "X") : (@board[pos_index] = "O")
   end 
+
+  def switch_player
+    @@current_player == player1 ? (@@current_player = player2) : @@current_player = player1
+  end
 
   def victory?
     3.times do |i|
@@ -86,10 +93,26 @@ class Game
   def finished_game
     display
     if victory?
-      @@player1_turn = !@@player1_turn # Need to 'revert to previous' turn
-      @@player1_turn ? (puts "#{player1.name} Win !!") : (puts "#{player2.name} Win !!")
+      switch_player # Need it to 'revert to previous' player
+      puts "#{@@current_player.name} wins !! Congratulations!"
     else
       puts "It's a draw !"
+    end
+
+    replay
+  end
+
+  def replay
+    puts "Play another round ? (Y/N)"
+    answer = gets.chomp
+    if answer == 'Y'
+      puts "Let's go !"
+      play_round
+    elsif answer == 'N'
+      puts "Bye"
+    else
+      puts "Wrong input" 
+      replay
     end
   end
 end
