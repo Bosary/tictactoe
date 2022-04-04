@@ -1,5 +1,8 @@
 # TODO 
+# Create a board class and display module and clean Game
 # Split main file into classes files
+# Add computer
+# Add choice of symbol
 
 class Player
   attr_reader :name
